@@ -1,0 +1,62 @@
+#######################################
+# Syntax Coloring Map For SCD30_I2C
+#######################################
+
+#######################################
+# Datatypes	(KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions	(KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+
+startContinuousMeasurement	KEYWORD2
+stopContinuousMeasurement	KEYWORD2
+
+setMeasurementInterval	KEYWORD2
+getMeasurementInterval	KEYWORD2
+
+getCommandStatus	KEYWORD2
+getMeasurementStatus	KEYWORD2
+getMeasurement	KEYWORD2
+
+setAutoCalibration	KEYWORD2
+getAutoCalibration	KEYWORD2
+
+setManualCalibration	KEYWORD2
+getManualCalibration	KEYWORD2
+
+setTemperatureOffset	KEYWORD2
+getTemperatureOffset	KEYWORD2
+
+setAltitude	KEYWORD2
+getAltitude	KEYWORD2
+
+readFirmwareVersion	KEYWORD2
+reset	KEYWORD2
+
+#######################################
+# Instances	(KEYWORD2)
+#######################################
+
+SCD30_I2C	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+SCD30_I2C_NO_ERROR	LITERAL1
+SCD30_I2C_DATA_SIZE_ERROR	LITERAL1
+SCD30_I2C_ADDR_ACK_ERROR	LITERAL1
+SCD30_I2C_DATA_ACK_ERROR	LITERAL1
+SCD30_I2C_OTHER_ERROR	LITERAL1
+SCD30_I2C_READY_ERROR	LITERAL1
+SCD30_I2C_CRC8_ERROR	LITERAL1
+
+SCD30_I2C_SPEED	LITERAL1
+SCD30_I2C_ACK_STRETCH	LITERAL1
+SCD30_I2C_ACK_ASC_STRETCH	LITERAL1
+
+SCD30_I2C_ERROR_VALUE	LITERAL1
