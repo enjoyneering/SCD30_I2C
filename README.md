@@ -58,6 +58,6 @@ Supports all sensors features:
 [version]:       https://img.shields.io/badge/Version-1.0.0-green.svg
 [stars]:         https://img.shields.io/github/stars/enjoyneering/SCD30_I2C.svg
 [stargazers]:    https://github.com/enjoyneering/SCD30_I2C/stargazers
-[hit-count]:     [https://hits.seeyoufarm.com/](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fenjoyneering%2FSCD30_I2C&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)
+[hit-count]:     https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fenjoyneering%2FSCD30_I2C&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false
 [github-issues]: https://img.shields.io/github/issues/enjoyneering/SCD30_I2C.svg
 [issues]:        https://github.com/enjoyneering/SCD30_I2C/issues/
