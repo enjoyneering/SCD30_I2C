@@ -14,9 +14,9 @@
    - CO2 measurement range 0ppm..40000ppm
    - CO2 accuracy +-(30ppm + 3% of measured value) in range 400ppm..10000ppm
    - humidity measurement range 0%..100%
-   - humidity accuracy +-3%
+   - humidity accuracy +-2%
    - temperature measurement range -40C..+70C
-   - temperature accuracy +-0.1C
+   - temperature accuracy +-0.3C
    - I2C not 5v tolerant, level converter required & requires SEL pin floating or connected to GND
    - lifetime 15years
 
