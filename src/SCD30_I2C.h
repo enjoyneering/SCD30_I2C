@@ -19,9 +19,9 @@
    - CO2 temperature stability +-2.5ppm/C in range 0C..+50C (2)
    - CO2 measurement interval 2sec..1800sec, recomended 5sec..60sec (1)
    - humidity measurement range 0%..100%
-   - humidity accuracy +-3%
+   - humidity accuracy +-2%
    - temperature measurement range -40C..+70C
-   - temperature accuracy +-0.1C
+   - temperature accuracy +-0.3C
    - interfaces:
      - UART/Modbus (4)
      - I2C (5)
