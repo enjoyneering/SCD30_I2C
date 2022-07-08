@@ -813,7 +813,7 @@ float SCD30_I2C::_readMeasurement()
 
       float fValue;
 
-      memcpy(&fValue, &regBigEnd, sizeof(float));     //convert uint32_t value to float
+      memcpy(&fValue, &regBigEnd, sizeof(fValue));    //convert uint32_t value to float
 
       return fValue;
     }
