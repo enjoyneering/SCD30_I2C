@@ -16,9 +16,9 @@ This is Arduino library for Sensirion SCD30 sensor controlled via I²C bus
 - CO2 temperature stability ±2.5ppm/°C in range 0°C..+50°C **(2)**
 - CO2 measurement interval 2sec..1800sec, recomended 5sec..60sec **(1)**
 - humidity measurement range 0%..100%
-- humidity accuracy ±3%
+- humidity accuracy ±2%
 - temperature measurement range -40C..+70C
-- temperature accuracy ±0.1°C
+- temperature accuracy ±0.3°C
 - interfaces:
   - UART/Modbus **(4)**
   - I²C **(5)**
@@ -51,7 +51,7 @@ Supports all sensors features:
 **(4)** UART/Modbus require pullup between "SEL" pin and VDD during power-up, do not exceed +4.0v<br>
 **(5)** I²C requires "SEL" pin floating or connected to GND, speed 50KHz..100KHz, clock stretching 30ms..150ms and internal pull-up 45kOhm to +3.0v **(not 5v tolerant, level converter required)**<br>
 **(6)** Exposing sensor to direct sunlight can cause temperature fluctuations and rapid aging of SCD30<br>
-**(7)** Library returns 99999 for CO2, T & RH if a communication error occurs or CRC doesn't match<br>
+**(7)** Library returns 55555 for CO2, T & RH if a communication error occurs or CRC doesn't match<br>
 
 [license-badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
 [license]:       https://choosealicense.com/licenses/gpl-3.0/
