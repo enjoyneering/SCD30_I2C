@@ -8,7 +8,7 @@ This is Arduino library for Sensirion SCD30 sensor controlled via I²C bus
 - maximum average current 19mA (idle state & processing), peak current 75mA (processing) **(1)**
 - energy consumption 120mJ per measurement
 - integrated SHT31 temperature & humidity sensor to compensate sensor self heating
-- external FRC (forced re-calibration) procedure or continuous ASC (automatic self-calibration) algorithm
+- external FRC (forced re-calibration) procedure or continuous ASC (automatic self-calibration) algorithm, see **NOTE**
 - CO2 working temperature range 0C..+50°C at 5%..95%, if out wait for 2 hours at 25°C **(2)**
 - CO2 measurement range 0ppm..40000ppm (I²C, UART/Modbus), 0..5000ppm (PWM)
 - CO2 accuracy ±(30ppm + 3% of measured value) in range 400ppm..10000ppm **(2)(3)**
