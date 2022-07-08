@@ -19,9 +19,9 @@
    - CO2 temperature stability +-2.5ppm/C in range 0C..+50C (2)
    - CO2 measurement interval 2sec..1800sec, recomended 5sec..60sec (1)
    - humidity measurement range 0%..100%
-   - humidity accuracy +-3%
+   - humidity accuracy +-2%
    - temperature measurement range -40C..+70C
-   - temperature accuracy +-0.1C
+   - temperature accuracy +-0.3C
    - interfaces:
      - UART/Modbus (4)
      - I2C (5)
@@ -320,9 +320,9 @@ bool SCD30_I2C::getMeasurementStatus()
 
     - CO2 measurement range 0ppm..40000ppm +-(30ppm + 3% of measured value)
       - response time (t63) 20sec at measurement interval range 2sec
-    - SHT31 humidity measurement range 0%..100% +-3%
+    - SHT31 humidity measurement range 0%..100% +-2%
       - response time (t63) 8sec
-    - SHT31 temperature measurement range -40C..+70C +-0.1C
+    - SHT31 temperature measurement range -40C..+70C +-0.3C
       - response time (t63) 10sec
 
     - see "_writeRegister(uint16_t reg)" for details
@@ -541,7 +541,7 @@ uint16_t SCD30_I2C::getManualCalibration()
 
     - minimun temperature offset step 0.01C e.g. 0.00C, 0.01C, 0.02C,.., 1.00C etc.
     - CO2 sensor working temperature range 0C..+50C at 5%..95%
-    - SHT31 temperature measurement range -40C..+70C +-0.1C
+    - SHT31 temperature measurement range -40C..+70C +-0.3C
 */
 /**************************************************************************/
 bool SCD30_I2C::setTemperatureOffset(const float offsetTemperature)
