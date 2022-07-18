@@ -43,31 +43,34 @@
 
 
    This device uses I2C bus to communicate, specials pins are required to interface
-   Board                                   SDA                   SCL                   Level
-   Uno, Mini, Pro, ATmega168, ATmega328... A4                    A5                    5v
-   Mega2560............................... 20                    21                    5v
-   Due, SAM3X8E........................... 20                    21                    3.3v
-   Leonardo, Micro, ATmega32U4............ 2                     3                     5v
-   Digistump, Trinket, ATtiny85........... PB0                   PB2                   5v
-   Blue Pill*, STM32F103xxxx boards*...... PB9/PB7               PB8/PB6               3.3v/5v
-   ESP8266 ESP-01**....................... GPIO0                 GPIO2                 3.3v/5v
-   NodeMCU 1.0**, WeMos D1 Mini**......... GPIO4/D2              GPIO5/D1              3.3v/5v
-   ESP32.................................. GPIO21/D21            GPIO22/D22            3.3v
-                                          *hardware I2C Wire mapped to Wire1 in stm32duino
-                                           see https://github.com/stm32duino/wiki/wiki/API#i2c
-                                         **boards has 10-12kOhm pullup-up resistor on GPIO2/D4/LED,
-                                           GPIO0/D3 & pullup-down on GPIO15/D8 for flash & boot
+   Board:                                    SDA              SCL              Level
+   Uno, Mini, Pro, ATmega168, ATmega328..... A4               A5               5v
+   Mega2560................................. 20               21               5v
+   Due, SAM3X8E............................. 20               21               3.3v
+   Leonardo, Micro, ATmega32U4.............. 2                3                5v
+   Digistump, Trinket, ATtiny85............. PB0              PB2              5v
+   Blue Pill*, STM32F103xxxx boards*........ PB9/PB7          PB8/PB6          3.3v/5v
+   ESP8266 ESP-01**......................... GPIO0            GPIO2            3.3v/5v
+   NodeMCU 1.0**, WeMos D1 Mini**........... GPIO4/D2         GPIO5/D1         3.3v/5v
+   ESP32***................................. GPIO21/D21       GPIO22/D22       3.3v
+                                             GPIO16/D16       GPIO17/D17       3.3v
+                                            *hardware I2C Wire mapped to Wire1 in stm32duino
+                                             see https://github.com/stm32duino/wiki/wiki/API#i2c
+                                           **most boards has 10K..12K pullup-up resistor
+                                             on GPIO0/D3, GPIO2/D4/LED & pullup-down on
+                                             GPIO15/D8 for flash & boot
+                                          ***hardware I2C Wire mapped to TwoWire(0) aka GPIO21/GPIO22 in Arduino ESP32
 
    Supported frameworks:
-   AVR     Core       -  https://github.com/arduino/ArduinoCore-avr
-   ATtiny  Core       -  https://github.com/SpenceKonde/ATTinyCore
-   ESP32   Core       -  https://github.com/espressif/arduino-esp32
-   ESP8266 Core       -  https://github.com/esp8266/Arduino
-   STM32   Core       -  https://github.com/stm32duino/Arduino_Core_STM32
+   Arduino Core - https://github.com/arduino/Arduino/tree/master/hardware
+   ATtiny  Core - https://github.com/SpenceKonde/ATTinyCore
+   ESP8266 Core - https://github.com/esp8266/Arduino
+   ESP32   Core - https://github.com/espressif/arduino-esp32
+   STM32   Core - https://github.com/stm32duino/Arduino_Core_STM32
 
 
    GNU GPL license, all text above must be included in any redistribution,
-   see link for details  - https://www.gnu.org/licenses/licenses.html
+   see link for details - https://www.gnu.org/licenses/licenses.html
 */
 /***************************************************************************************************/
 
@@ -132,8 +135,10 @@ class SCD30_I2C
 
   #if defined (__AVR__)
    bool     begin(uint32_t speed = SCD30_I2C_SPEED, uint32_t stretch = SCD30_I2C_ACK_ASC_STRETCH);
-  #elif defined (ESP8266) || defined (ESP32)
+  #elif defined (ESP8266)
    bool     begin(uint8_t sda = SDA, uint8_t scl = SCL, uint32_t speed = SCD30_I2C_SPEED, uint32_t stretch = SCD30_I2C_ACK_ASC_STRETCH);
+  #elif defined (ESP32)
+   bool     begin(int32_t sda = SDA, int32_t scl = SCL, uint32_t speed = SCD30_I2C_SPEED, uint32_t stretch = SCD30_I2C_ACK_ASC_STRETCH);
   #elif defined (_VARIANT_ARDUINO_STM32_)
    bool     begin(uint8_t sda = SDA, uint8_t scl = SCL, uint32_t speed = SCD30_I2C_SPEED);
   #else
