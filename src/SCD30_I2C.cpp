@@ -551,7 +551,7 @@ uint16_t SCD30_I2C::getManualCalibration()
 /**************************************************************************/
 bool SCD30_I2C::setTemperatureOffset(const float offsetTemperature)
 {
-  uint16_t offset = offsetTemperature * 100;                         //float to int16=C x 100, see NOTE
+  int16_t offset = offsetTemperature * 100;                          //float to int16=C x 100, see NOTE
 
   offset = offset + _readRegister(SCD30_I2C_TEMPERATURE_OFFSET_REG); //offset=newOffset + oldOffset, see "Low Power Mode for SCD30" p.2
 
