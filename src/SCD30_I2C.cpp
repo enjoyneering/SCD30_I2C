@@ -23,7 +23,7 @@
    - temperature measurement range -40C..+70C
    - temperature accuracy +-0.3C
    - interfaces:
-     - UART/Modbus (4)
+     - UART-Modbus (4)
      - I2C (5)
      - PWM
    - lifetime 15years (6)
@@ -36,26 +36,26 @@
    (3) optical cell should never be in contact with any objects, SCD30 are delicate optical systems
        and mechanical stresses on the optical cavity could change physical properties & measurement
        accuracy, in cases of mechanical stress run calibration to restore accuracy
-   (4) UART/Modbus require pullup between SEL pin and VDD during power-up, do not exceed +4.0v
+   (4) UART-Modbus require pullup between SEL pin and VDD during power-up, do not exceed +4.0v
    (5) I2C requires SEL pin floating or connected to GND, address 0x61, speed 50KHz..100KHz,
        clock stretching 30ms..150ms, internal pull-up 45kOhm to +3.0v (not 5v tolerant, level converter required)
    (6) exposing sensor to direct sunlight can cause temperature fluctuations and rapid aging of SCD30
 
 
    This device uses I2C bus to communicate, specials pins are required to interface
-   Board:                                    SDA              SCL              Level
+   Board                                     SDA              SCL              Level
    Uno, Mini, Pro, ATmega168, ATmega328..... A4               A5               5v
    Mega2560................................. 20               21               5v
    Due, SAM3X8E............................. 20               21               3.3v
    Leonardo, Micro, ATmega32U4.............. 2                3                5v
-   Digistump, Trinket, ATtiny85............. PB0              PB2              5v
+   Digistump, Trinket, Gemma, ATtiny85...... PB0/D0           PB2/D2           3.3v/5v
    Blue Pill*, STM32F103xxxx boards*........ PB9/PB7          PB8/PB6          3.3v/5v
    ESP8266 ESP-01**......................... GPIO0            GPIO2            3.3v/5v
    NodeMCU 1.0**, WeMos D1 Mini**........... GPIO4/D2         GPIO5/D1         3.3v/5v
    ESP32***................................. GPIO21/D21       GPIO22/D22       3.3v
                                              GPIO16/D16       GPIO17/D17       3.3v
                                             *hardware I2C Wire mapped to Wire1 in stm32duino
-                                             see https://github.com/stm32duino/wiki/wiki/API#i2c
+                                             see https://github.com/stm32duino/wiki/wiki/API#I2C
                                            **most boards has 10K..12K pullup-up resistor
                                              on GPIO0/D3, GPIO2/D4/LED & pullup-down on
                                              GPIO15/D8 for flash & boot
@@ -91,7 +91,7 @@ SCD30_I2C::SCD30_I2C()
 /*
     begin()
 
-    Initialize I2C & sensor
+    Initialize I2C bus & look for sensor
 
     NOTE:
     - call this function before doing anything else!!!
@@ -124,7 +124,9 @@ bool SCD30_I2C::begin(uint32_t speed, uint32_t stretch)
 
   Wire.setClock(speed);                                    //experimental! AVR I2C bus speed 31kHz..400kHz, default 100000Hz
 
-  Wire.setWireTimeout(stretch, false);                     //experimental! default 25000usec, true=Wire hardware will be automatically reset on timeout
+  #if !defined (__AVR_ATtiny85__)                          //for backwards compatibility with ATtiny Core
+  Wire.setWireTimeout(stretch, false);                     //experimental! default 25000usec, true=Wire hardware will be automatically reset to default on timeout
+  #endif
 
 #elif defined (ESP8266)
 bool SCD30_I2C::begin(uint8_t sda, uint8_t scl, uint32_t speed, uint32_t stretch)
@@ -142,7 +144,7 @@ bool SCD30_I2C::begin(int32_t sda, int32_t scl, uint32_t speed, uint32_t stretch
 
   Wire.setTimeout(stretch / 1000);                         //experimental! default 50msec
 
-#elif defined (_VARIANT_ARDUINO_STM32_)
+#elif defined (ARDUINO_ARCH_STM32)
 bool SCD30_I2C::begin(uint8_t sda, uint8_t scl, uint32_t speed)
 {
   Wire.begin(sda, scl);
@@ -178,7 +180,7 @@ bool SCD30_I2C::begin()
     - for setting a new ambient pressure when continuous measurement is
       running the whole command has to be written to sensor
 
-    - CO2 measurements based on the NDIR principle influenced by altitude
+    - CO2 measurement based on the NDIR principle depends on altitude
       & can be compensated by altitude or ambient pressure
     - ambient pressure compensation range 700mBar...1400mBar or set
       0mBar to disable ambient pressure compensation
@@ -340,15 +342,15 @@ bool SCD30_I2C::getMeasurementStatus()
 void SCD30_I2C::getMeasurement(float *co2, float *temp, float *humd)
 {
   /* check if new measurement ready */
-  if ((getMeasurementStatus() != true) && (_cmdStatus == 0))                //measurement not ready && ready status was read without errors
+  if ((getMeasurementStatus() != true) && (_cmdStatus == SCD30_I2C_NO_ERROR)) //measurement not ready && ready status was read without errors
   {
-    _cmdStatus = SCD30_I2C_READY_ERROR;                                     //measurement not ready (measurement interval too long)
+    _cmdStatus = SCD30_I2C_READY_ERROR;                                       //measurement not ready (measurement interval too long)
 
-    return;                                                                 //"break" just exits loop/"if-else" & "return" terminates entire function
+    return;                                                                   //"break" just exits "loop"/"if-else" & "return" terminates entire function
   }
 
   /* request measurement data */
-  if (_writeRegister(SCD30_I2C_READ_MSRMNT_REG) != true)                    //I2C error, no reason to continue
+  if (_writeRegister(SCD30_I2C_READ_MSRMNT_REG) != true)                      //I2C error, no reason to continue
   {
     *co2  = SCD30_I2C_ERROR_VALUE;
     *temp = SCD30_I2C_ERROR_VALUE;
@@ -467,7 +469,7 @@ bool SCD30_I2C::getAutoCalibration()
 /*
     setManualCalibration()
 
-    Set CO2 concentration manualy, in ppm
+    Calibrate CO2 concentration manualy, in ppm
 
     NOTE:
     - FRC (forced re-calibration) is recommended for calibration during
@@ -532,6 +534,7 @@ uint16_t SCD30_I2C::getManualCalibration()
     electrical components
 
     NOTE:
+    - offset 0C..+70C in step 0.01C e.g. 0.00C, 0.01C, 0.02C,.., 70.00C
     - Sensirion SCD30 compensate self heating from internal electrical
       components (e.g. IR light source) with SHT31 temperature & humidity
       sensor, but if the sensor is encapsulated with other components, it
@@ -544,7 +547,6 @@ uint16_t SCD30_I2C::getManualCalibration()
     - temperature offset value is stored in non-volatile memory & activated
       automatically after power on
 
-    - minimun temperature offset step 0.01C e.g. 0.00C, 0.01C, 0.02C,.., 1.00C etc.
     - CO2 sensor working temperature range 0C..+50C at 5%..95%
     - SHT31 temperature measurement range -40C..+70C +-0.3C
 */
