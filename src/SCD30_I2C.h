@@ -54,6 +54,7 @@
    NodeMCU 1.0**, WeMos D1 Mini**........... GPIO4/D2         GPIO5/D1         3.3v/5v
    ESP32***................................. GPIO21/D21       GPIO22/D22       3.3v
                                              GPIO16/D16       GPIO17/D17       3.3v
+   ESP32-S3................................. GPIO8            GPIO9            3.3V
                                             *hardware I2C Wire mapped to Wire1 in stm32duino
                                              see https://github.com/stm32duino/wiki/wiki/API#I2C
                                            **most boards has 10K..12K pullup-up resistor
@@ -81,12 +82,12 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#if defined (__AVR__)
-#include <avr/pgmspace.h>               //for Arduino AVR PROGMEM support
-#elif defined (ESP8266)
-#include <pgmspace.h>                   //for Arduino ESP8266 PROGMEM support
+#if defined (ARDUINO_ARCH_AVR)
+#include <avr/pgmspace.h>          //for Arduino AVR PROGMEM support
+#elif defined (ARDUINO_ARCH_ESP8266) || defined (ARDUINO_ARCH_ESP32)
+#include <pgmspace.h>              //for Arduino ESP8266 PROGMEM support
 #elif defined (ARDUINO_ARCH_STM32)
-#include <avr/pgmspace.h>               //for Arduino STM32 PROGMEM support
+#include <avr/pgmspace.h>          //for Arduino STM32 PROGMEM support
 #endif
 
 
@@ -133,11 +134,11 @@ class SCD30_I2C
   public:
    SCD30_I2C();
 
-  #if defined (__AVR__)
+  #if defined (ARDUINO_ARCH_AVR)
    bool     begin(uint32_t speed = SCD30_I2C_SPEED, uint32_t stretch = SCD30_I2C_ACK_ASC_STRETCH);
-  #elif defined (ESP8266)
+  #elif defined (ARDUINO_ARCH_ESP8266)
    bool     begin(uint8_t sda = SDA, uint8_t scl = SCL, uint32_t speed = SCD30_I2C_SPEED, uint32_t stretch = SCD30_I2C_ACK_ASC_STRETCH);
-  #elif defined (ESP32)
+  #elif defined (ARDUINO_ARCH_ESP32)
    bool     begin(int32_t sda = SDA, int32_t scl = SCL, uint32_t speed = SCD30_I2C_SPEED, uint32_t stretch = SCD30_I2C_ACK_ASC_STRETCH);
   #elif defined (ARDUINO_ARCH_STM32)
    bool     begin(uint32_t sda = SDA, uint32_t scl = SCL, uint32_t speed = SCD30_I2C_SPEED);
