@@ -54,6 +54,7 @@
    NodeMCU 1.0**, WeMos D1 Mini**........... GPIO4/D2         GPIO5/D1         3.3v/5v
    ESP32***................................. GPIO21/D21       GPIO22/D22       3.3v
                                              GPIO16/D16       GPIO17/D17       3.3v
+   ESP32-S3................................. GPIO8            GPIO9            3.3V
                                             *hardware I2C Wire mapped to Wire1 in stm32duino
                                              see https://github.com/stm32duino/wiki/wiki/API#I2C
                                            **most boards has 10K..12K pullup-up resistor
@@ -117,7 +118,7 @@ SCD30_I2C::SCD30_I2C()
       - 4, other error
 */
 /**************************************************************************/
-#if defined (__AVR__)
+#if defined (ARDUINO_ARCH_AVR)
 bool SCD30_I2C::begin(uint32_t speed, uint32_t stretch)
 {
   Wire.begin();
@@ -128,7 +129,7 @@ bool SCD30_I2C::begin(uint32_t speed, uint32_t stretch)
   Wire.setWireTimeout(stretch, false);                     //experimental! default 25000usec, true=Wire hardware will be automatically reset to default on timeout
   #endif
 
-#elif defined (ESP8266)
+#elif defined (ARDUINO_ARCH_ESP8266)
 bool SCD30_I2C::begin(uint8_t sda, uint8_t scl, uint32_t speed, uint32_t stretch)
 {
   Wire.begin(sda, scl);
@@ -137,7 +138,7 @@ bool SCD30_I2C::begin(uint8_t sda, uint8_t scl, uint32_t speed, uint32_t stretch
 
   Wire.setClockStretchLimit(stretch);                      //experimental! default 150000usec
 
-#elif defined (ESP32)
+#elif defined (ARDUINO_ARCH_ESP32)
 bool SCD30_I2C::begin(int32_t sda, int32_t scl, uint32_t speed, uint32_t stretch) //"int32_t" for Master SDA & SCL, "uint8_t" for Slave SDA & SCL
 {
   if (Wire.begin(sda, scl, speed) != true) {return false;} //experimental! ESP32 I2C bus speed ???kHz..400kHz, default 100000Hz
@@ -342,9 +343,13 @@ bool SCD30_I2C::getMeasurementStatus()
 void SCD30_I2C::getMeasurement(float *co2, float *temp, float *humd)
 {
   /* check if new measurement ready */
-  if ((getMeasurementStatus() != true) && (_cmdStatus == SCD30_I2C_NO_ERROR)) //measurement not ready && ready status was read without errors
+  if ((getMeasurementStatus() != true) && (_cmdStatus == SCD30_I2C_NO_ERROR)) //measurement not ready && "getMeasurementStatus()" was read without errors
   {
     _cmdStatus = SCD30_I2C_READY_ERROR;                                       //measurement not ready (measurement interval too long)
+
+    *co2  = SCD30_I2C_ERROR_VALUE;
+    *temp = SCD30_I2C_ERROR_VALUE;
+    *humd = SCD30_I2C_ERROR_VALUE;
 
     return;                                                                   //"break" just exits "loop"/"if-else" & "return" terminates entire function
   }
