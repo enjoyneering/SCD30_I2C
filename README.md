@@ -1,9 +1,10 @@
-[![license-badge][]][license] ![version] [![stars][]][stargazers] ![hit-count] [![github-issues][]][issues]
+[![license-badge][]][license] ![version] [![stars][]][stargazers] [![github-issues][]][issues]
 
 # SCD30_I2C
 This is Arduino library for Sensirion SCD30 sensor controlled via I²C bus
 
 - NDIR CO2 optical sensor with dual-channel detection technology
+- boot-up (warm up) time is < 2 seconds **(7)**
 - power supply voltage +3.3v..+5.5v
 - maximum average current 19mA (idle state & processing), peak current 75mA (processing) **(1)**
 - energy consumption 120mJ per measurement
@@ -58,6 +59,5 @@ Supports all sensors features:
 [version]:       https://img.shields.io/badge/Version-1.0.5-green.svg
 [stars]:         https://img.shields.io/github/stars/enjoyneering/SCD30_I2C.svg
 [stargazers]:    https://github.com/enjoyneering/SCD30_I2C/stargazers
-[hit-count]:     https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fenjoyneering%2FSCD30_I2C&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false
 [github-issues]: https://img.shields.io/github/issues/enjoyneering/SCD30_I2C.svg
 [issues]:        https://github.com/enjoyneering/SCD30_I2C/issues/
