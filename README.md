@@ -52,7 +52,7 @@ Supports all sensors features:
 **(4)** UART/Modbus require pullup between "SEL" pin and VDD during power-up, do not exceed +4.0v<br>
 **(5)** I²C requires "SEL" pin floating or connected to GND, speed 50KHz..100KHz, clock stretching 30ms..150ms and internal pull-up 45kOhm to +3.0v **(not 5v tolerant, level converter required)**<br>
 **(6)** Exposing sensor to direct sunlight can cause temperature fluctuations and rapid aging of SCD30<br>
-**(7)** Library returns **55555** for CO2, T & RH if a communication error occurs or CRC doesn't match<br>
+**(7)** Library returns **55555** for CO2, T and RH if the sensor is not ready, a communication error occurred or the CRC does not match<br>
 
 [license-badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
 [license]:       https://choosealicense.com/licenses/gpl-3.0/
