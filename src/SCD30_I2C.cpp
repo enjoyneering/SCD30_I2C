@@ -562,7 +562,7 @@ bool SCD30_I2C::setTemperatureOffset(const float offsetTemperature)
 
 //offset = offset + _readRegister(SCD30_I2C_TEMPERATURE_OFFSET_REG); //offset=newOffset + oldOffset, see "Low Power Mode for SCD30" p.2
 
-  if (_cmdStatus != SCD30_I2C_NO_ERROR) {return false;}              //I2C error on last command, no reason to continue
+//if (_cmdStatus != SCD30_I2C_NO_ERROR) {return false;}              //I2C error on last command, no reason to continue
 
   offset = constrain(offset, 0, 7000);                               //offset 0C..+70C, see NOTE
 
