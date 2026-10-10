@@ -56,7 +56,7 @@ Supports all sensors features:
 
 [license-badge]: https://img.shields.io/badge/License-GPLv3-blue.svg
 [license]:       https://choosealicense.com/licenses/gpl-3.0/
-[version]:       https://img.shields.io/badge/Version-1.0.5-green.svg
+[version]:       https://img.shields.io/badge/Version-1.0.6-green.svg
 [stars]:         https://img.shields.io/github/stars/enjoyneering/SCD30_I2C.svg
 [stargazers]:    https://github.com/enjoyneering/SCD30_I2C/stargazers
 [github-issues]: https://img.shields.io/github/issues/enjoyneering/SCD30_I2C.svg
